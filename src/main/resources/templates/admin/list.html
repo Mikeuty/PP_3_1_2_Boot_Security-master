@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+<h1>Админ</h1>
+<br>
+<br>
+<h2>Пользователи</h2>
+<div th:if="${not #lists.isEmpty(users)}">
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Возраст</th>
+            <th>Пароль</th>
+            <th>Роль</th>
+            <th>Изменить/Удалить</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.age}"></td>
+            <td th:text="${user.password}"></td>
+            <td>
+                <span th:each="role : ${user.roles}" th:text="${#strings.substringAfter(role.name, 'ROLE_')} + ' '"></span>
+            </td>
+            <td>
+                <a th:href="@{/admin/edit(id=${user.id})}">Изменить</a>
+                <form th:method="POST" th:action="@{/admin/delete}" style="display:inline;">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <input type="hidden" name="id" th:value="${user.id}" />
+                    <button type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:unless="${not #lists.isEmpty(users)}">
+    <p>Список пользователей пуст.  Добавьте пользователей!</p>
+</div>
+<br>
+<a th:href="@{/admin/new}">Создать нового пользователя</a>
+</body>
+<br>
+<br>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выход"/>
+</form>
+</html>

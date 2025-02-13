@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>User List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <h1>Админ</h1>
 <br>
-<br>
 <h2>Пользователи</h2>
 <div th:if="${not #lists.isEmpty(users)}">
 
-    <table border="1">
+    <table class="table table-striped">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Имя</th>
-            <th>Фамилия</th>
-            <th>Возраст</th>
-            <th>Пароль</th>
-            <th>Роль</th>
-            <th>Изменить/Удалить</th>
+            <th scope="col">ID</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Возраст</th>
+            <th scope="col">Пароль</th>
+            <th scope="col">Роль</th>
+            <th scope="col">Изменить/Удалить</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${users}">
+        <tr th:each="user, userStat : ${users}">
             <td th:text="${user.id}"></td>
             <td th:text="${user.name}"></td>
             <td th:text="${user.lastName}"></td>

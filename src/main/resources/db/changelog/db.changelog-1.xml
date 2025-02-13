@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Создание таблицы users -->
+    <changeSet id="001-create-users-table" author="user">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_users_name"/>
+            </column>
+            <column name="last_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Создание таблицы roles -->
+    <changeSet id="002-create-roles-table" author="user">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
+        <createTable tableName="roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_roles"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uq_roles_name"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="003-create-users-roles-table" author="user">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users_roles"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users_roles">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="users_roles" columnNames="user_id, role_id" constraintName="pk_users_roles"/>
+
+        <addForeignKeyConstraint baseTableName="users_roles" baseColumnNames="user_id"
+                                 referencedTableName="users" referencedColumnNames="id"
+                                 constraintName="fk_users_roles_user" onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseTableName="users_roles" baseColumnNames="role_id"
+                                 referencedTableName="roles" referencedColumnNames="id"
+                                 constraintName="fk_users_roles_role" onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -45,12 +45,9 @@ public class AdminController {
     }
 
     @PostMapping()
-    public String createUser(@ModelAttribute("user") @Valid User user,
-                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<Role> allRoles = roleService.getAllRoles();
+    public String createUser (@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
             return "admin/new";
-        }
 
         userService.saveUser(user);
         return "redirect:/admin";
